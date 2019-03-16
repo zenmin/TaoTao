@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+		http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+	<context:component-scan base-package="com.taotao.content.service"></context:component-scan>
+
+	<!-- 发布dubbo服务 -->
+	<!-- 提供应用方信息 -->
+	<dubbo:application name="taotao-content" />
+	<!-- 注册中心地址 Zookeeper地址 -->
+	<dubbo:registry protocol="zookeeper" address="192.168.25.133:2181" />
+	<!-- 用dubbo在8889端口暴露服务 -->
+	<dubbo:protocol name="dubbo" port="8889"></dubbo:protocol>
+
+	<!-- 声明需要暴露的接口(发布服务) 以及引用实现类 直接类名小写 -->
+	<dubbo:service interface="com.taotao.content.service.ContentCategroyService" ref="contentCategroyServiceImpl" ></dubbo:service>
+    <dubbo:service interface="com.taotao.content.service.ContentService" ref="contentServiceImpl"></dubbo:service>
+    
+</beans>

@@ -1,0 +1,3 @@
+本工程概况：
+
+使用了FastDFS上传图片   注意 在 new FastClient的时候需要导入一个配置文件 即fastdfs/client.conf  内指定tracker的ip

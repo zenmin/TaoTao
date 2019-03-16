@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+
+	<!-- Redis集群连接配置文件 -->
+
+
+	<!-- 开启注解支持 否则不能自动装载 -->
+	<context:annotation-config></context:annotation-config>
+
+
+	<!-- 配置Redis连接单机版 -->
+	<bean id="jedisPool" class="redis.clients.jedis.JedisPool">
+		<constructor-arg name="host" value="192.168.25.133"></constructor-arg>
+		<constructor-arg name="port" value="6379"></constructor-arg>
+	</bean>
+	
+	<bean id="jedisClientPool" class="com.taotao.service.util.JedisClientPool"></bean>
+
+
+	<!-- 配置redis连接集群 <bean id="jedisCluster" class="redis.clients.jedis.JedisCluster"> 
+		加入节点ip <constructor-arg> <set> <bean class="redis.clients.jedis.HostAndPort"> 
+		<constructor-arg name="host" value="192.168.25.133"></constructor-arg> <constructor-arg 
+		name="port" value="6379"></constructor-arg> </bean> <bean class="redis.clients.jedis.HostAndPort"> 
+		<constructor-arg name="host" value="192.168.25.133"></constructor-arg> <constructor-arg 
+		name="port" value="6380"></constructor-arg> </bean> <bean class="redis.clients.jedis.HostAndPort"> 
+		<constructor-arg name="host" value="192.168.25.133"></constructor-arg> <constructor-arg 
+		name="port" value="6391"></constructor-arg> </bean> <bean class="redis.clients.jedis.HostAndPort"> 
+		<constructor-arg name="host" value="192.168.25.133"></constructor-arg> <constructor-arg 
+		name="port" value="6389"></constructor-arg> </bean> <bean class="redis.clients.jedis.HostAndPort"> 
+		<constructor-arg name="host" value="192.168.25.133"></constructor-arg> <constructor-arg 
+		name="port" value="6390"></constructor-arg> </bean> <bean class="redis.clients.jedis.HostAndPort"> 
+		<constructor-arg name="host" value="192.168.25.133"></constructor-arg> <constructor-arg 
+		name="port" value="6391"></constructor-arg> </bean> </set> </constructor-arg> 
+		</bean> <bean id="jedisClientCluste" class="com.taotao.content.util.JedisClientCluster"></bean> -->
+</beans>

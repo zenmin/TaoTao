@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cache="http://www.springframework.org/schema/cache"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache-4.3.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+	<!-- 配置注解驱动 -->
+	<mvc:annotation-driven></mvc:annotation-driven>
+
+	<!-- 视图解析器 -->
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/jsp/"></property>
+		<property name="suffix" value=".jsp"></property>
+	</bean>
+
+	<!-- 配置包扫描 -->
+	<context:component-scan base-package="com.taotao.*"
+		use-default-filters="false">
+		<context:include-filter type="annotation"
+			expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
+
+	<!-- 静态资源映射 也可以这样处理 -->
+	 <mvc:resources location="/WEB-INF/css/" mapping="/css/**" />
+	 <mvc:resources location="/WEB-INF/js/" mapping="/js/**" />
+	 <mvc:resources location="/WEB-INF/images/" mapping="/images/**" />
+	
+	<!-- 引用dubbo服务 -->
+	<dubbo:application name="taotao-sso-web" />
+	<!-- 注册中心地址 -->
+	<dubbo:registry protocol="zookeeper" address="192.168.25.133:2181"></dubbo:registry>
+	<dubbo:reference interface="com.taotao.sso.service.UserService"
+		id="userService"></dubbo:reference>
+
+</beans>

@@ -1,0 +1,15 @@
+本工程概况：
+
+Freemarker生成静态页面 
+
+首先需要模板  直接将我们的jsp改成ftl即可  把jstl标签换成Freemarker的语法即可
+
+逻辑：当ActiveMQ接收到消息之后  在Listener中我们通过id从数据库中查询出这个商品的信息和详细信息  使用Freemarker生成静态页面
+
+        步骤：1、spring中加入FreeMarkerConfigurer  指定模板路径和字符集编码
+          2、Listener中注入FreeMarkerConfigurer
+          3、获取一个configure
+          4、configure获取模板
+          5、创建map 并给模板中参数赋值
+          6、输出静态文件 Writer
+          7、templete.process(map,out)生成

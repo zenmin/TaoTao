@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+  
+  
+<generatorConfiguration>
+
+	<!-- 指定mysql的jar 否则EClipse的逆向工程工具报错  且路径不能为中文-->
+	<classPathEntry
+		location="C:\Java\eclipse\workspace\_MyBatis3.4Study_07_mbg\lib\mysql-connector-java-5.1.7-bin.jar" />
+
+	<context id="DB2Tables" targetRuntime="MyBatis3">
+
+		<!-- 禁止生成注释 -->
+		<commentGenerator>
+			<property name="suppressAllComments" value="true" />
+		</commentGenerator>
+
+
+		<!-- 配置数据库连接信息 -->
+		<jdbcConnection connectionURL="jdbc:mysql://127.0.0.1:3306/taotao"
+			driverClass="com.mysql.jdbc.Driver" password="root" userId="root" />
+
+		<!-- 指定生成的javaBean的位置  写全工程名  不然EClipse的Mybatis插件不识别 -->
+		<javaModelGenerator targetPackage="com.taotao.pojo" targetProject="taotao-manager-pojo/src/main/java" />
+
+		<!-- 指定mapper映射文件生成的位置 -->
+		<sqlMapGenerator targetPackage="com.taotao.dao" targetProject="taotao-manager-dao/src/main/java" />
+
+		<!-- 指定mapper接口生成的位置 -->
+		<javaClientGenerator targetPackage="com.taotao.dao"
+			targetProject="taotao-manager-dao/src/main/java" type="XMLMAPPER" />
+        
+<!--         是否让schema作为包的后缀 -->
+		<!-- 指定每个表的生成策略 -->
+		<table schema="" tableName="tb_content" />
+		<table schema="" tableName="tb_content_category" />
+		<table schema="" tableName="tb_item" />
+		<table schema="" tableName="tb_item_cat" />
+		<table schema="" tableName="tb_item_desc" />
+		<table schema="" tableName="tb_item_param" />
+		<table schema="" tableName="tb_item_param_item" />
+		<table schema="" tableName="tb_order" />
+		<table schema="" tableName="tb_order_item" />
+		<table schema="" tableName="tb_order_shipping" />
+		<table schema="" tableName="tb_user" />
+    
+	</context>
+</generatorConfiguration>

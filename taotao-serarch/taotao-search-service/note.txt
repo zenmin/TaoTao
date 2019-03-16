@@ -1,0 +1,26 @@
+本工程概况：
+
+1、使用了Solr
+   导入全部商品信息：首先从数据库中查询出所有的商品，然后循环遍历出Solr中定义好的 需要的字段  在添加到Solr中
+  查询单个商品信息：首先要创建一个DAO层  dao层注入SolrServer   service层设置好条件和分页     交给DAO根据条件执行查询   完成之后  把SolrDocument中需要的字段值进行设置给Bean  
+                                并且取出高亮的title(一般都是固定那格式)  然后把此对象加入到List中  最后返回此List
+                  serivce接收到此List  算出总页码 返回给Controller层
+                  
+2、ACtiveMQ监听
+    首先需要在Spring中配置消息监听者 
+     指定工厂  ip端口  
+     引用工厂  
+     这里不需要JMSTemplete  因为JMSTemplate是发送消息才需要的
+     创建ActiveMQQueue/ActiveMQTopic
+     把我们自定义的Listener加入SPring    
+   配置DefaultMessageListenerContainer 指定connectionFactory  指定destination  指定Listener    
+   
+   接收消息 
+   创建一个类  实现MessageListener 实现默认方法
+   
+    @Override
+    public void onMessage(Message arg0) {
+    }
+   
+             
+  

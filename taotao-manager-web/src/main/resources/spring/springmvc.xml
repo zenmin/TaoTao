@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cache="http://www.springframework.org/schema/cache"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache-4.3.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+
+	<!-- 读取配置文件 图片服务器 -->
+	<context:property-placeholder
+		location="classpath:/fastdfs/ImageServerURL.properties" />
+
+
+	<!-- 配置注解驱动 -->
+	<mvc:annotation-driven></mvc:annotation-driven>
+
+
+	<!-- 视图解析器 -->
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/jsp/"></property>
+		<property name="suffix" value=".jsp"></property>
+	</bean>
+
+	<!-- 配置包扫描 -->
+	<context:component-scan base-package="com.taotao.controller"></context:component-scan>
+
+	<!-- 静态资源映射 也可以这样处理 <mvc :resources location="/css/" mapping="/css/**" /> -->
+	<mvc:default-servlet-handler />
+
+	<!-- 配置文件上传解析器 -->
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="defaultEncoding" value="UTF-8"></property>
+		<property name="maxUploadSize" value="5242880"></property>
+	</bean>
+
+	<!-- 引用dubbo服务 -->
+	<dubbo:application name="taotao-manager-web" />
+	<!-- 注册中心地址 -->
+	<dubbo:registry protocol="zookeeper" address="192.168.25.133:2181"></dubbo:registry>
+	<!-- 引用接口 -->
+
+	<!-- 商品管理接口 -->
+	<dubbo:reference interface="com.taotao.service.ItemService"
+		id="itemService"></dubbo:reference>
+	<dubbo:reference interface="com.taotao.service.ItemCatService"
+		id="itemCatService"></dubbo:reference>
+
+	<!-- 内容管理接口 -->
+	<dubbo:reference interface="com.taotao.content.service.ContentCategroyService"
+		id="contentCategroyService"></dubbo:reference>
+	<dubbo:reference interface="com.taotao.content.service.ContentService"
+		id="contentService"></dubbo:reference>
+
+	<!-- 添加索引库接口 -->
+	<dubbo:reference interface="com.taotao.search.service.ImportItemToSolrService"
+		id="importItemToSolrService" timeout="300000"></dubbo:reference>
+
+</beans>

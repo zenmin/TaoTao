@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+
+	<!-- 配置ActiveMQ客户端连接 -->
+
+	<!-- 整合接收消息 -->
+	<!-- 创建Activemq的工厂类 -->
+	<bean id="targetConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+		<constructor-arg name="brokerURL" value="tcp://192.168.25.133:61616"></constructor-arg>
+	</bean>
+	<!-- 使用Spring引用（这是真正的工厂） -->
+	<bean id="connectionFactory"
+		class="org.springframework.jms.connection.SingleConnectionFactory">
+		<property name="targetConnectionFactory" ref="targetConnectionFactory"></property>
+	</bean>
+
+	<!-- 创建Destination目标 指定队列名称 -->
+	<bean id="test-queue" class="org.apache.activemq.command.ActiveMQQueue">
+		<constructor-arg name="name" value="test-queue"></constructor-arg>
+	</bean>
+	<!-- 创建订阅信息 -->
+	<bean id="itemadd-topic" class="org.apache.activemq.command.ActiveMQTopic">
+		<constructor-arg name="name" value="itemadd-topic"></constructor-arg>
+	</bean>
+
+	<!-- 配置消息接收 -->
+	<!-- <bean id="messageListener" class="com.taotao.search.mqlistener.MessageListener"></bean> -->
+
+	<!-- 处理消息的Listenter -->
+	<bean id="itemAddMessageListener" class="com.taotao.item.listener.ItemAddMessageListener"></bean>
+	
+	<bean
+		class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+		<property name="connectionFactory" ref="connectionFactory"></property>
+		<property name="destination" ref="itemadd-topic"></property>
+		<property name="messageListener" ref="itemAddMessageListener"></property>
+	</bean>
+
+</beans>

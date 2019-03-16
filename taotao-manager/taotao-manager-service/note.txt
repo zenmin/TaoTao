@@ -1,0 +1,29 @@
+本工程概况：
+
+添加商品：
+添加成功 ActiveMQ发送消息  发送添加商品的id 然后taotao-search-web接收到信息  从数据库查询出此id对应的商品信息 然后把它添加到索引库
+   
+根据id查询商品/根据id查详细信息：
+首先会从Redis缓存中去查  key是 前缀:id:item/DESC （中间加冒号 在RedisDesktopManager下显示是按文件夹分开的）
+如果REdis没查询到  再从数据库查询  并且加入到Redis缓存  并且设置有效期时长为一天
+
+
+ActiveMQ发送消息：
+    首先要在Spring容器中配置消息发送者  
+    指定工厂指定服务器ip端口 
+    指定JMSTemple 
+    指定Destination 是Queue还是Topic  
+     
+  发送消息：首先要注入一个Destination  还要注入JMSTemplate
+        如   
+    // 根据id注入一个Destination 由于这里有两个一样的类型的Destination 所以使用名称注入
+    @Resource(name = "itemadd-topic")
+    private Destination topic;
+    
+    最后使用JMSTemplete发送消息
+    jmsTemplete.send(topic, new MessageCreator() {
+            @Override
+            public Message createMessage(Session session) throws JMSException {
+         }
+    }
+    
